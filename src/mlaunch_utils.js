@@ -1,12 +1,5 @@
-/**
- * @Author: guiguan
- * @Date:   2017-03-31T09:12:27+11:00
- * @Last modified by:   chris
- * @Last modified time: 2017-05-05T16:20:36+10:00
- */
-
 const shelljs = require('shelljs');
-
+const os = require('os');
 const MLAUNCH = 'mlaunch';
 const TMP_DIR = 'data';
 
