@@ -6,9 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "zhaoyi0113@gmail.com",
-  "license": "ISC",
+  "author": "joey@southbanksoftware.com",
+  "license": "MIT",
   "dependencies": {
     "shelljs": "^0.7.8"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Zhao Yi",
+      "email": "joey@southbanksoftware.net"
+    }
+  ]
 }
