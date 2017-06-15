@@ -1,0 +1,14 @@
+{
+  "name": "test-utils",
+  "version": "1.0.0",
+  "description": "Test utils classes for test cases.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zhaoyi0113@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "shelljs": "^0.7.8"
+  }
+}
