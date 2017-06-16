@@ -26,7 +26,7 @@ const launchMongoInstance = (type, port, parameters) => {
     port +
     ' --port ' +
     port +
-    ' ' + '  --hostname localhost ' + 
+    ' ' + '  --hostname localhost ' +
     parameters;
   console.log('launch command ', command);
   shelljs.exec(command);
@@ -67,8 +67,8 @@ const launchMongos = (port, nodenumber, parameters) => {
  * @param colName
  * @param parameters
  */
-const generateMongoData = (port, dbName = 'test', colName = 'test', parameters = '') => {
-  const command = 'mgenerate src/tests/helpers/json_template.json --num 1 --port ' +
+const generateMongoData = (port, dbName = 'test', colName = 'test', templateFile, parameters = '') => {
+  const command = 'mgenerate ' + templateFile + ' --num 1 --port ' +
     port +
     ' --database ' +
     dbName +
