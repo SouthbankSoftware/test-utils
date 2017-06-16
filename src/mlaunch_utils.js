@@ -26,7 +26,7 @@ const launchMongoInstance = (type, port, parameters) => {
     port +
     ' --port ' +
     port +
-    ' ' +
+    ' ' + '  --hostname localhost ' + 
     parameters;
   console.log('launch command ', command);
   shelljs.exec(command);
