@@ -1,6 +1,6 @@
 const shelljs = require('shelljs');
 const os = require('os');
-const TMP_DIR = 'data';
+const TMP_DIR = os.platform() !== 'win32' ? 'data': '/tmp';
 
 const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch':'bash -c "mlaunch ';
 const MGENERATE = os.platform() !== 'win32'? 'mgenerate':'bash -c "mgenerate ';
