@@ -2,8 +2,8 @@ const shelljs = require('shelljs');
 const os = require('os');
 const TMP_DIR = 'data';
 
-const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch':'bash -c mlaunch ';
-const MGENERATE = os.platform() !== 'win32'? 'mgenerate':'bash -c mgenerate ';
+const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch':'bash -c "mlaunch ';
+const MGENERATE = os.platform() !== 'win32'? 'mgenerate':'bash -c "mgenerate ';
 
 /**
  * generate random port number between 6000 and 7000
@@ -19,7 +19,7 @@ const getRandomPort = () => {
  * @param  type [description]
  */
 const launchMongoInstance = (type, port, parameters) => {
-  const command = MLAUNCH +
+  let command = MLAUNCH +
     ' init ' +
     type +
     ' --dir ' +
@@ -30,6 +30,9 @@ const launchMongoInstance = (type, port, parameters) => {
     port +
     ' ' + '  --hostname localhost ' +
     parameters;
+  if(os.platform() === 'win32'){
+    command += '"';
+  }
   console.log('launch command ', command);
   shelljs.exec(command);
 };
@@ -70,7 +73,7 @@ const launchMongos = (port, nodenumber, parameters) => {
  * @param parameters
  */
 const generateMongoData = (port, dbName = 'test', colName = 'test', templateFile, parameters = '') => {
-  const command = MGENERATE + ' ' + templateFile + ' --num 1 --port ' +
+  let command = MGENERATE + ' ' + templateFile + ' --num 1 --port ' +
     port +
     ' --database ' +
     dbName +
@@ -78,6 +81,9 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', templateFile
     colName +
     ' ' +
     parameters;
+  if(os.platform() === 'win32'){
+    command += '"';
+  }
   shelljs.exec(command);
   console.log('finish generating data:' + command);
 };
