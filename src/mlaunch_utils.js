@@ -96,7 +96,7 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', templateFile
 const killMongoInstance = (port) => {
   const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
   shelljs.exec(command);
-  shelljs.exec('rm -fr ' + TMP_DIR + '/' + port);
+  os.platform() !== 'win32' ? shelljs.exec('rm -fr ' + TMP_DIR + '/' + port): shelljs.exec('bash -c "rm -fr ' + TMP_DIR + '/' + port + '"');
 };
 
 module.exports = {
