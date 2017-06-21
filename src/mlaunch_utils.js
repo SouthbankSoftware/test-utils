@@ -75,7 +75,7 @@ const templateJson = '{ "_id" : ObjectId("5949c7671b9ea95bdd6c46ef"), "user" : {
  * @param parameters
  */
 const generateMongoData = (port, dbName = 'test', colName = 'test', parameters = '') => {
-  let command = MGENERATE + ' ' + templateJson + ' --num 1 --port ' +
+  let command = MGENERATE + ' \'' + templateJson + '\' --num 1 --port ' +
     port +
     ' --database ' +
     dbName +
