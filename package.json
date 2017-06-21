@@ -1,6 +1,6 @@
 {
   "name": "test-utils",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Test utils classes for test cases.",
   "main": "src/index.js",
   "author": "joey@southbanksoftware.com",
