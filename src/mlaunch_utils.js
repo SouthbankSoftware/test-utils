@@ -3,7 +3,7 @@ const os = require('os');
 const TMP_DIR = os.platform() !== 'win32' ? 'data' : '/tmp/data';
 
 const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch' : 'bash -c "mlaunch ';
-const MGENERATE = os.platform() !== 'win32' ? 'mgenerate' : 'bash -c "mgenerate ';
+const MGENERATE = os.platform() !== 'win32' ? 'mgenerate' : 'bash -c ^"mgenerate ';
 
 /**
  * generate random port number between 6000 and 7000
