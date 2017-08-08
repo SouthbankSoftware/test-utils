@@ -1,10 +1,13 @@
-const shelljs = require('shelljs');
 const os = require('os');
-const TMP_DIR = os.platform() !== 'win32' ? 'data' : '/tmp/data';
+const child_process = require('child_process');
 
-const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch' : 'bash -c "mlaunch ';
-const MGENERATE = os.platform() !== 'win32' ? 'mgenerate' : 'bash -c ^"mgenerate ';
+// const TMP_DIR = os.platform() !== 'win32' ? 'data' : '/tmp/data';
 
+// const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch' : 'bash -c "mlaunch ';
+// const MGENERATE = os.platform() !== 'win32' ? 'mgenerate' : 'bash -c ^"mgenerate ';
+const TMP_DIR = 'data';
+const MLAUNCH = 'mlaunch';
+const MGENERATE = 'mgenerate';
 /**
  * generate random port number between 6000 and 7000
  * @returns {number}
@@ -34,9 +37,10 @@ const launchMongoInstance = (type, port, parameters) => {
     command += '"';
   }
   console.log('launch command ', command);
-  shelljs.exec(command);
+  child_process.exec(command);
 };
-
+// const output = child_process.exec('start /b mongod --dbpath data')
+// console.log('launched')
 /**
  * launch a single mongodb instance
  *
@@ -90,7 +94,7 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', parameters =
   if (os.platform() === 'win32') {
     command += '"';
   }
-  shelljs.exec(command);
+  child_process.execSync(command);
   console.log('finish generating data:' + command);
 };
 
@@ -101,8 +105,10 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', parameters =
  */
 const killMongoInstance = (port) => {
   const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
-  shelljs.exec(command);
-  os.platform() !== 'win32' ? shelljs.exec('rm -fr ' + TMP_DIR + '/' + port) : shelljs.exec('bash -c "rm -fr ' + TMP_DIR + '/' + port + '"');
+  child_process.execSync(command);
+  if(os.platform() !== 'win32') { 
+    child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
+  }
 };
 
 module.exports = {
