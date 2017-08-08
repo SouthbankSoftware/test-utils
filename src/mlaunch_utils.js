@@ -37,7 +37,11 @@ const launchMongoInstance = (type, port, parameters) => {
     command += '"';
   }
   console.log('launch command ', command);
-  child_process.exec(command);
+  if (os.platform() === 'win32') {
+    child_process.exec(command);
+  } else {
+    child_process.execSync(command);
+  }
 };
 // const output = child_process.exec('start /b mongod --dbpath data')
 // console.log('launched')
@@ -71,7 +75,7 @@ const launchMongos = (port, nodenumber, parameters) => {
 
 let templateJson = '{    \"user\": {        \"name\": {            \"first\": {\"$choose\": [\"Liam\", \"Noah\", \"Ethan\", \"Mason\", \"Logan\", \"Jacob\", \"Lucas\", \"Jackson\", \"Aiden\", \"Jack\", \"James\", \"Elijah\", \"Luke\", \"William\", \"Michael\", \"Alexander\", \"Oliver\", \"Owen\", \"Daniel\", \"Gabriel\", \"Henry\", \"Matthew\", \"Carter\", \"Ryan\", \"Wyatt\", \"Andrew\", \"Connor\", \"Caleb\", \"Jayden\", \"Nathan\", \"Dylan\", \"Isaac\", \"Hunter\", \"Joshua\", \"Landon\", \"Samuel\", \"David\", \"Sebastian\", \"Olivia\", \"Emma\", \"Sophia\", \"Ava\", \"Isabella\", \"Mia\", \"Charlotte\", \"Emily\", \"Abigail\", \"Avery\", \"Harper\", \"Ella\", \"Madison\", \"Amelie\", \"Lily\", \"Chloe\", \"Sofia\", \"Evelyn\", \"Hannah\", \"Addison\", \"Grace\", \"Aubrey\", \"Zoey\", \"Aria\", \"Ellie\", \"Natalie\", \"Zoe\", \"Audrey\", \"Elizabeth\", \"Scarlett\", \"Layla\", \"Victoria\", \"Brooklyn\", \"Lucy\", \"Lillian\", \"Claire\", \"Nora\", \"Riley\", \"Leah\"] },            \"last\": {\"$choose\": [\"Smith\", \"Jones\", \"Williams\", \"Brown\", \"Taylor\", \"Davies\", \"Wilson\", \"Evans\", \"Thomas\", \"Johnson\", \"Roberts\", \"Walker\", \"Wright\", \"Robinson\", \"Thompson\", \"White\", \"Hughes\", \"Edwards\", \"Green\", \"Hall\", \"Wood\", \"Harris\", \"Lewis\", \"Martin\", \"Jackson\", \"Clarke\", \"Clark\", \"Turner\", \"Hill\", \"Scott\", \"Cooper\", \"Morris\", \"Ward\", \"Moore\", \"King\", \"Watson\", \"Baker\" , \"Harrison\", \"Morgan\", \"Patel\", \"Young\", \"Allen\", \"Mitchell\", \"James\", \"Anderson\", \"Phillips\", \"Lee\", \"Bell\", \"Parker\", \"Davis\"] }        },        \"gender\": {\"$choose\": [\"female\", \"male\"]},        \"age\": \"$number\",        \"address\": {            \"street\": {\"$string\": {\"length\": 10}},            \"house_no\": \"$number\",            \"zip_code\": {\"$number\": [10000, 99999]},            \"city\": {\"$choose\": [\"Manhattan\", \"Brooklyn\", \"New Jersey\", \"Queens\", \"Bronx\"]}        },        \"phone_no\": { \"$missing\" : { \"percent\" : 30, \"ifnot\" : {\"$number\": [1000000000, 9999999999]} } },        \"created_at\": {\"$date\": [\"2010-01-01\", \"2014-07-24\"] },        \"is_active\": {\"$choose\": [true, false]}    },    \"tags\": {\"$array\": {\"of\": {\"label\": \"$string\", \"id\": \"$oid\", \"subtags\":        {\"$missing\": {\"percent\": 80, \"ifnot\": {\"$array\": [\"$string\", {\"$number\": [2, 5]}]}}}}, \"number\": {\"$number\": [0, 10] }}}}';
 if (os.platform() === 'win32') {
-  templateJson = templateJson.replace(/\"/g, '\\"');;
+  templateJson = templateJson.replace(/\"/g, '\\"');
 }
 
 /**
@@ -106,7 +110,7 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', parameters =
 const killMongoInstance = (port) => {
   const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
   child_process.execSync(command);
-  if(os.platform() !== 'win32') { 
+  if (os.platform() !== 'win32') {
     child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
   }
 };
