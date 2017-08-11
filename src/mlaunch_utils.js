@@ -1,5 +1,6 @@
 const os = require('os');
 const child_process = require('child_process');
+const path = require('path');
 
 // const TMP_DIR = os.platform() !== 'win32' ? 'data' : '/tmp/data';
 
@@ -22,12 +23,13 @@ const getRandomPort = () => {
  * @param  type [description]
  */
 const launchMongoInstance = (type, port, parameters) => {
+  const separator = os.platform() === 'win32'?'\\': '/';
   let command = MLAUNCH +
     ' init ' +
     type +
     ' --dir ' +
     TMP_DIR +
-    '/' +
+    separator +
     port +
     ' --port ' +
     port +
@@ -121,9 +123,11 @@ const killMongoInstance = (port) => {
     child_process.execSync(command);
     child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
   } else {
-    const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
-    child_process.execSync(command);
-    child_process.execSync('rmdir /s /q ' + TMP_DIR + '\\' + port);
+    try{
+      const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '\\' + port + '\\';
+      child_process.execSync(command);
+      child_process.execSync('rmdir /s /q ' + TMP_DIR + '\\' + port);
+    }catch(_err){}
   }
 };
 
