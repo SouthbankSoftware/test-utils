@@ -23,7 +23,7 @@ const getRandomPort = () => {
  * @param  type [description]
  */
 const launchMongoInstance = (type, port, parameters) => {
-  const separator = os.platform() === 'win32'?'\\': '/';
+  const separator = os.platform() === 'win32' ? '\\' : '/';
   let command = MLAUNCH +
     ' init ' +
     type +
@@ -97,7 +97,7 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', parameters =
     colName +
     ' ' +
     parameters;
-  
+
   if (os.platform() === 'win32') {
     command = MGENERATE + ' ' + templateJson + ' --num 1 --port ' +
       port +
@@ -122,12 +122,6 @@ const killMongoInstance = (port) => {
     const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
     child_process.execSync(command);
     child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
-  } else {
-    try{
-      const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '\\' + port + '\\';
-      child_process.execSync(command);
-      child_process.execSync('rmdir /s /q ' + TMP_DIR + '\\' + port);
-    }catch(_err){}
   }
 };
 

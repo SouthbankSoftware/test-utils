@@ -1,6 +1,6 @@
 {
   "name": "test-utils",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Test utils classes for test cases.",
   "main": "src/index.js",
   "author": "joey@southbanksoftware.com",
@@ -8,12 +8,10 @@
   "dependencies": {
     "shelljs": "^0.7.8"
   },
-  "contributors": [
-    {
-      "name": "Zhao Yi",
-      "email": "joey@southbanksoftware.net"
-    }
-  ],
+  "contributors": [{
+    "name": "Zhao Yi",
+    "email": "joey@southbanksoftware.net"
+  }],
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1"
