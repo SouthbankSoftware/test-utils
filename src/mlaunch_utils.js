@@ -118,11 +118,13 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', parameters =
  * @param port
  */
 const killMongoInstance = (port) => {
-  if (os.platform() !== 'win32') {
-    const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
-    child_process.execSync(command);
-    child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
-  }
+  try {
+    if (os.platform() !== 'win32') {
+      const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
+      child_process.execSync(command);
+      child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
+    }
+  } catch (_) {}
 };
 
 module.exports = {
