@@ -1,14 +1,16 @@
+/**
+ * Created by joey on 15/6/17.
+ * @Last modified by:   guiguan
+ * @Last modified time: 2018-01-29T15:16:38+11:00
+ */
+
 const os = require('os');
 const child_process = require('child_process');
 const path = require('path');
 
-// const TMP_DIR = os.platform() !== 'win32' ? 'data' : '/tmp/data';
-
-// const MLAUNCH = os.platform() !== 'win32' ? 'mlaunch' : 'bash -c "mlaunch ';
-// const MGENERATE = os.platform() !== 'win32' ? 'mgenerate' : 'bash -c ^"mgenerate ';
 const TMP_DIR = 'data';
 const MLAUNCH = 'mlaunch';
-const MGENERATE = 'mgenerate';
+const MGENERATE = path.resolve(__dirname, '../node_modules/.bin/mgeneratejs');
 /**
  * generate random port number between 6000 and 7000
  * @returns {number}
@@ -24,7 +26,8 @@ const getRandomPort = () => {
  */
 const launchMongoInstance = (type, port, parameters) => {
   const separator = os.platform() === 'win32' ? '\\' : '/';
-  let command = MLAUNCH +
+  let command =
+    MLAUNCH +
     ' init ' +
     type +
     ' --dir ' +
@@ -33,7 +36,8 @@ const launchMongoInstance = (type, port, parameters) => {
     port +
     ' --port ' +
     port +
-    ' ' + '  --hostname localhost ' +
+    ' ' +
+    '  --hostname localhost ' +
     parameters;
   if (os.platform() === 'win32') {
     command += '"';
@@ -42,7 +46,9 @@ const launchMongoInstance = (type, port, parameters) => {
   if (os.platform() === 'win32') {
     child_process.exec(command);
   } else {
-    child_process.execSync(command);
+    child_process.execSync(command, {
+      stdio: 'inherit',
+    });
   }
 };
 // const output = child_process.exec('start /b mongod --dbpath data')
@@ -74,41 +80,23 @@ const launchMongos = (port, nodenumber, parameters) => {
   launchMongoInstance('--mongos ' + nodenumber, port, parameters);
 };
 
-
-let templateJson = '{    \"user\": {        \"name\": {            \"first\": {\"$choose\": [\"Liam\", \"Noah\", \"Ethan\", \"Mason\", \"Logan\", \"Jacob\", \"Lucas\", \"Jackson\", \"Aiden\", \"Jack\", \"James\", \"Elijah\", \"Luke\", \"William\", \"Michael\", \"Alexander\", \"Oliver\", \"Owen\", \"Daniel\", \"Gabriel\", \"Henry\", \"Matthew\", \"Carter\", \"Ryan\", \"Wyatt\", \"Andrew\", \"Connor\", \"Caleb\", \"Jayden\", \"Nathan\", \"Dylan\", \"Isaac\", \"Hunter\", \"Joshua\", \"Landon\", \"Samuel\", \"David\", \"Sebastian\", \"Olivia\", \"Emma\", \"Sophia\", \"Ava\", \"Isabella\", \"Mia\", \"Charlotte\", \"Emily\", \"Abigail\", \"Avery\", \"Harper\", \"Ella\", \"Madison\", \"Amelie\", \"Lily\", \"Chloe\", \"Sofia\", \"Evelyn\", \"Hannah\", \"Addison\", \"Grace\", \"Aubrey\", \"Zoey\", \"Aria\", \"Ellie\", \"Natalie\", \"Zoe\", \"Audrey\", \"Elizabeth\", \"Scarlett\", \"Layla\", \"Victoria\", \"Brooklyn\", \"Lucy\", \"Lillian\", \"Claire\", \"Nora\", \"Riley\", \"Leah\"] },            \"last\": {\"$choose\": [\"Smith\", \"Jones\", \"Williams\", \"Brown\", \"Taylor\", \"Davies\", \"Wilson\", \"Evans\", \"Thomas\", \"Johnson\", \"Roberts\", \"Walker\", \"Wright\", \"Robinson\", \"Thompson\", \"White\", \"Hughes\", \"Edwards\", \"Green\", \"Hall\", \"Wood\", \"Harris\", \"Lewis\", \"Martin\", \"Jackson\", \"Clarke\", \"Clark\", \"Turner\", \"Hill\", \"Scott\", \"Cooper\", \"Morris\", \"Ward\", \"Moore\", \"King\", \"Watson\", \"Baker\" , \"Harrison\", \"Morgan\", \"Patel\", \"Young\", \"Allen\", \"Mitchell\", \"James\", \"Anderson\", \"Phillips\", \"Lee\", \"Bell\", \"Parker\", \"Davis\"] }        },        \"gender\": {\"$choose\": [\"female\", \"male\"]},        \"age\": \"$number\",        \"address\": {            \"street\": {\"$string\": {\"length\": 10}},            \"house_no\": \"$number\",            \"zip_code\": {\"$number\": [10000, 99999]},            \"city\": {\"$choose\": [\"Manhattan\", \"Brooklyn\", \"New Jersey\", \"Queens\", \"Bronx\"]}        },        \"phone_no\": { \"$missing\" : { \"percent\" : 30, \"ifnot\" : {\"$number\": [1000000000, 9999999999]} } },        \"created_at\": {\"$date\": [\"2010-01-01\", \"2014-07-24\"] },        \"is_active\": {\"$choose\": [true, false]}    },    \"tags\": {\"$array\": {\"of\": {\"label\": \"$string\", \"id\": \"$oid\", \"subtags\":        {\"$missing\": {\"percent\": 80, \"ifnot\": {\"$array\": [\"$string\", {\"$number\": [2, 5]}]}}}}, \"number\": {\"$number\": [0, 10] }}}}';
-if (os.platform() === 'win32') {
-  templateJson = templateJson.replace(/\s/g, '').replace(/\"/g, '\\"');
-}
-
 /**
  * generate mongo dump data on the collection
  *
  * @param port
  * @param dbName
  * @param colName
- * @param parameters
+ * @param number
  */
-const generateMongoData = (port, dbName = 'test', colName = 'test', parameters = '') => {
-  let command = MGENERATE + ' \'' + templateJson + '\' --num 1 --port ' +
-    port +
-    ' --database ' +
-    dbName +
-    ' --collection ' +
-    colName +
-    ' ' +
-    parameters;
+const generateMongoData = (port, dbName = 'test', colName = 'test', number = 1) => {
+  const command = `${MGENERATE} -n ${number} "${path.resolve(
+    __dirname,
+    './template.json',
+  )}" | mongoimport --port ${port} -d ${dbName} -c ${colName}`;
 
-  if (os.platform() === 'win32') {
-    command = MGENERATE + ' ' + templateJson + ' --num 1 --port ' +
-      port +
-      ' --database ' +
-      dbName +
-      ' --collection ' +
-      colName +
-      ' ' +
-      parameters;
-  }
-  child_process.execSync(command);
+  child_process.execSync(command, {
+    stdio: 'inherit',
+  });
   console.log('finish generating data:' + command);
 };
 
@@ -117,12 +105,16 @@ const generateMongoData = (port, dbName = 'test', colName = 'test', parameters =
  *
  * @param port
  */
-const killMongoInstance = (port) => {
+const killMongoInstance = port => {
   try {
     if (os.platform() !== 'win32') {
       const command = MLAUNCH + ' kill --dir ' + TMP_DIR + '/' + port;
-      child_process.execSync(command);
-      child_process.execSync('rm -fr ' + TMP_DIR + '/' + port);
+      child_process.execSync(command, {
+        stdio: 'inherit',
+      });
+      child_process.execSync('rm -fr ' + TMP_DIR + '/' + port, {
+        stdio: 'inherit',
+      });
     }
   } catch (_) {}
 };
