@@ -1,9 +1,12 @@
 {
   "name": "test-utils",
-  "version": "1.1.0",
-  "description": "Test utils classes for test cases.",
+  "version": "1.1.1",
+  "description": "MongoDB test utilities",
   "main": "src/index.js",
-  "author": "joey@southbanksoftware.com",
+  "author": {
+    "name": "Zhao Yi",
+    "email": "joey@southbanksoftware.net"
+  },
   "license": "MIT",
   "contributors": [{
       "name": "Zhao Yi",
@@ -14,6 +17,14 @@
       "email": "root@guiguan.net"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SouthbankSoftware/test-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SouthbankSoftware/test-utils/issues"
+  },
+  "homepage": "https://github.com/SouthbankSoftware/test-utils#readme",
   "dependencies": {
     "mgeneratejs": "^0.4.0"
   },
