@@ -1,6 +1,7 @@
 # test-utils
 *MongoDB test utilities*
 
+[![npm](https://img.shields.io/npm/v/test-utils.svg?style=flat-square)](https://www.npmjs.com/package/test-utils)
 [![dependencies](https://img.shields.io/david/SouthbankSoftware/test-utils.svg?style=flat-square)](https://david-dm.org/SouthbankSoftware/test-utils)
 [![devDependencies](https://img.shields.io/david/dev/SouthbankSoftware/test-utils.svg?style=flat-square)](https://david-dm.org/SouthbankSoftware/test-utils?type=dev)
 
